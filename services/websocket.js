@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const config = require('../config');
+const config = require('../config/config');
 const { getMetrics } = require('./metrics');
 const { getSystemInfo } = require('../utils/system');
 const { executeCommand } = require('./commands');
