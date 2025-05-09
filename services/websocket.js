@@ -67,27 +67,18 @@ exports.connect = () => {
             const message = JSON.parse(data);
             console.log(`Received message: ${message.type}`);
 
-            // Handle ping messages
-            if (message.type === 'ping') {
-                sendMessage({
-                    type: 'pong',
-                    timestamp: message.timestamp
-                });
-                console.log('Responded to ping');
-            }
-
             // Handle command messages
-            else if (message.type === 'command') {
+            if (message.type === 'command') {
                 console.log(`Received command: ${message.command}`, message.parameters);
 
                 try {
                     // Execute the command
                     const result = await executeCommand(message.command, message.parameters);
 
-                    // Send response
+                    // IMPORTANT: Send response back with correct format
                     sendMessage({
                         type: 'command_response',
-                        commandId: message.commandId,
+                        commandId: message.commandId, // Must include the same commandId
                         success: result.success,
                         result: result.success ? result.result : undefined,
                         error: result.success ? undefined : result.error,
@@ -98,6 +89,7 @@ exports.connect = () => {
                 } catch (error) {
                     console.error(`Error executing command: ${message.command} - ${error.message}`);
 
+                    // Send error response
                     sendMessage({
                         type: 'command_response',
                         commandId: message.commandId,
@@ -107,6 +99,8 @@ exports.connect = () => {
                     });
                 }
             }
+
+            // ... other message handlers
         } catch (error) {
             console.error(`Error processing message: ${error.message}`);
         }
