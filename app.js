@@ -1,4 +1,4 @@
-const config = require('./config');
+const config = require('./config/config');
 const { connect, disconnect } = require('./services/websocket');
 const { registerCommandHandler } = require('./services/commands');
 
