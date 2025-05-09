@@ -6,13 +6,14 @@ function generateUniqueId() {
     // Use hostname + random hex as a default ID
     const hostname = os.hostname().toLowerCase().replace(/[^a-z0-9]/g, '');
     const randomPart = crypto.randomBytes(4).toString('hex');
+    console.log('generating id ', `worker-${hostname}-${randomPart}`);
     return `worker-${hostname}-${randomPart}`;
 }
 
 
 module.exports = {
     // Worker identity
-    nodeId: process.env.NODE_ID || generateUniqueId(),
+    nodeId: generateUniqueId(),
     nodeName: process.env.NODE_NAME || os.hostname(),
 
     // Environment
